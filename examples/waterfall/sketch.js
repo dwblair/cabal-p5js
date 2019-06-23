@@ -5,8 +5,8 @@ var socket;
 var peerList= new Set();
 var localKey;
 
-width = 100;
-height=100;
+width = 300;
+height=300;
 
 bh = height/4;
 
@@ -29,45 +29,52 @@ socket.on('peer',
       console.log("Got: " + info);
       localKey=info.local_key.substring(0,5);
       console.log("local_key:",localKey);
-      new_peer=info.peer.substring(0,3);   
+      new_peer=info.peer.substring(0,3);
       peerList.add(new_peer);   
   
     }
   );
 
-socket.on('message',
+
+  
+  socket.on('peer-connected',
     // When we receive data
     function(info) {
 	 //background(0);
       console.log(info);
-      sender=info.key.substring(0,5);
-      message=info.value.content.text;
-      console.log('sender:'+sender);
-      console.log('message:'+message);
-      px=time;
-      epsilon=2;
-      py=band*bh+epsilon;
-	  stroke(255);
-	  point(px,py);
-	  point(px+1,py);
-	  point(px-1,py);
-	  point(px,py+1);
-	  point(px,py-1);
+      new_peer=info.peer.substring(0,5);
+      peerList.add(new_peer); 
+      console.log(peerList);
     }
   );
+  
   
 }
 
 function draw() {
-  //background(0);
-    stroke(200);
+stroke(50);
     px=time;
     py_top=band*bh;
     py_bottom=band*bh+bh;
-    line(px,py_top,px,py_bottom);  
+    line(px,py_top,px,py_bottom);
+
+
+
+peerIndex=1
+delta=10
+ peerList.forEach(peer => {
+	 randomColor=color(random(255),random(255),random(255));
+	 fill(randomColor);
+	 noStroke();
+    rect(px-3,band*bh+peerIndex*delta,3,3);
+    peerIndex=peerIndex+1;
+  });
+  
+  
+  //update the time
     time=time+1;
-    if(time>width) {
-		//background(0);
+    if(time>(width+1)) {
+		
 		time=0;
 		band=band+1;
 	}
