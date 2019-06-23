@@ -109,7 +109,7 @@ io.sockets.on('connection',
         
         //socket.broadcast.emit('peer',peerId.substring(0,5) );
         //socket.broadcast.emit('peer',peerId);
-        socket.broadcast.emit('peer',send_packet);
+        socket.broadcast.emit('peer-connected',send_packet);
  });
  
    headless.onMessageReceived((data) => {

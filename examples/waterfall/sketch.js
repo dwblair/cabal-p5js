@@ -5,17 +5,18 @@ var socket;
 var peerList= new Set();
 var localKey;
 
-width = 300;
-height=300;
+mywidth = 400;
+myheight=400;
 
-bh = height/4;
+bh = myheight/4;
+gap=3;
 
 var time=0;
 var band=0;
 
 function setup() {
   //createCanvas(windowWidth, windowHeight);
-  createCanvas(width, height);
+  createCanvas(mywidth, myheight);
 
   background(0);
   // Start a socket connection to the server
@@ -55,7 +56,7 @@ function draw() {
 stroke(50);
     px=time;
     py_top=band*bh;
-    py_bottom=band*bh+bh;
+    py_bottom=band*bh+bh-gap;
     line(px,py_top,px,py_bottom);
 
 
@@ -73,7 +74,7 @@ delta=10
   
   //update the time
     time=time+1;
-    if(time>(width+1)) {
+    if(time>(mywidth+1)) {
 		
 		time=0;
 		band=band+1;
