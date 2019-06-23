@@ -28,6 +28,6 @@ For example:
 
 In `examples/bubbles`, open `index.html` in a browser.  Peers should appear as small circles; and as you write messages to the cabal, you should seem them appear as larger circles:
 
-<img src="./examples/bubbles.png">
+<img src="./examples/bubbles/bubbles.png">
 
 
