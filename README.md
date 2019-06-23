@@ -37,4 +37,6 @@ In `examples/bubbles`, open `index.html` in a browser.  Peers should appear as s
 
 <img src="./examples/bubbles/bubbles.png">
 
+### Maps
+
 
