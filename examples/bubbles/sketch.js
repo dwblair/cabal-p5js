@@ -3,21 +3,25 @@
 // Keep track of our socket connection
 var socket;
 var peerList= new Set();
+var messageList=new Set();
 var localKey;
 
 var y=10;
 
+textFactor=10;
 
 let numBalls = 0;
 let spring = 0.05;
-let gravity = 0.03;
+//let gravity = 0.03;
+let gravity = 0.0;
 // let gravity = 0.0;
-let friction = -0.9;
+//let friction = -0.9;
+let friction = -0.1;
 let balls = [];
 
 function setup() {
   //createCanvas(windowWidth, windowHeight);
-  createCanvas(400, 400);
+  createCanvas(400,400);
   background(0);
   //createCanvas(720, 400);
   
@@ -26,13 +30,14 @@ function setup() {
   socket = io.connect('http://localhost:8899');
   // We make a named event called 'mouse' and write an
   // anonymous callback function
-socket.on('peer',
+socket.on('peer-connected',
     // When we receive data
     function(info) {
       console.log("Got: " + info);
       localKey=info.local_key.substring(0,5);
       console.log("local_key:",localKey);
-      new_peer=info.peer.substring(0,3);   
+      new_peer=info.peer.substring(0,3);
+      if(peerList.has(new_peer)==false) {   
       peerList.add(new_peer);   
       
       // create a new ball for this peer
@@ -40,13 +45,14 @@ socket.on('peer',
       balls[numBalls-1] = new Ball(
       random(width),
       random(height),
-      random(30, 70),
+      40,
       numBalls-1,
       balls,
       new_peer,
-      [200,200,200]
+      [200,100]
     );
     
+}
     
     }
   );
@@ -60,17 +66,17 @@ socket.on('message',
       message=info.value.content.text;
       console.log('sender:'+sender);
       console.log('message:'+message);
-      
+            
       // create a new ball for this message
       numBalls=numBalls+1
       balls[numBalls-1] = new Ball(
       random(width),
       random(height),
-      random(30, 70),
+      message.length*10,
       numBalls-1,
       balls,
       message,      
-      [100,100,100]
+      [100,100,210,200]
     );
     
 	  
@@ -92,7 +98,7 @@ function draw() {
 }
 
 class Ball {
-  constructor(xin, yin, din, idin, oin, messagein,colorin) {
+  constructor(xin, yin, din, idin, oin, textin,colorin) {
     this.x = xin;
     this.y = yin;
     this.vx = 0;
@@ -100,7 +106,7 @@ class Ball {
     this.diameter = din;
     this.id = idin;
     this.others = oin;
-    this.message=messagein;
+    this.text=textin;
     this.color=colorin;
   }
 
@@ -153,6 +159,6 @@ class Ball {
 	fill(this.color);
     ellipse(this.x, this.y, this.diameter, this.diameter);
     fill(0);
-    text(this.message,this.x,this.y);
+    text(this.text,this.x-this.diameter/4,this.y);
   }
 }
